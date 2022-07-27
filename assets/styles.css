@@ -8,3 +8,7 @@ body {
     align-items: center;
     background: bisque;
 }
+
+#toStart {
+    display: visible;
+}
