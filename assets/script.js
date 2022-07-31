@@ -1,29 +1,60 @@
-var questions = ["◘0", "◘1", "◘2", "◘3", "◘4"]; 
-var resetBtn = document.querySelector("#startBtn");
-startBtn.addEventListener("click", myFunction);
+var start = document.querySelector("#startBtn");
+var container = document.querySelector(".container");
 
-function myFunction() {
-    var x = document.getElementById("startBtn");
-    if (x.style.display === "visible") {
-        x.style.padding = "60%";
-    } else {
-      x.style.display = "none";
-    }
-  }
+var mode = "queued";
 
-const check = document.getElementById("check");
+start.addEventListener("click", function() {
+// the start variable will listen for a click event to operate  
+  if(mode === "queued") {
+    start.setAttribute("class", "started");
+// the start variable's style is changed to ".started" which hides the button    
+// below are the actions to perform IF the mode is queued which it is by default
+    var answers = ["Remaru", "Veldora", "Gobbiru", "Miliem"];
+answers.forEach(function(i) {
 // forEach will allow a function to act upon each element of the array
 // the parameter (i) can only be called inside the function
-questions.forEach(function (i) {
     const button = document.createElement("button");
     button.innerText = i;
-// innerText is just displaying the value of the array called 
+// innerText is just displaying the value of the array called
         button.addEventListener("click", function() {
-            alert(i)
+            document.getElementById("check").remove();
+            clearInterval(theTimer);
 // the function has the event listener inside because it needs
-// to be checking that a user clicks on the created button
+// to be checking that the user clicks on the created button
         })
 // finally it attaches the button to the check element
-    check.appendChild(button);
+    check.append(button);
+});
+document.getElementById("theSpan").innerHTML = "<strong>Here is the first question?</strong>"
+    var timeleft = 10;
+    var theTimer = setInterval(function() {
+  if(timeleft <= 0) {
+// additionally, a timer begins when the user clicks on start
+// the timer will remove the question at the end of its interval
+    document.getElementById("check").remove();
+    clearInterval(theTimer);
+  }
+  document.getElementById("timer").innerHTML = timeleft
+  document.getElementById("timer").value = 10 - timeleft;
+  timeleft--;
+}, 1000);
+
+mode = "active";
+container.setAttribute("class", "active");
+// finally the mode is changed to active mode to indicate it has been clicked
+  }
+
+  else {
+    mode = "queued";
+    container.setAttribute("class", "queued");
+  };
 });
 
+
+
+
+// ===========================================================
+
+// for (var i = 0; i < questions.length; i++) {
+//   document.getElementById("check").setAttribute("style", "display: flex");
+// } 

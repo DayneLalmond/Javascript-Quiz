@@ -1,61 +1,87 @@
-// So inside the "div" element created by the const variable, I
-// allowed the next element "strong" also created by a const
-// variable to have a string within and append(attach) to the div
-// which will ultimately append to the body to be displayed
-const body = document.body
-const div = document.createElement("div")
-const strong = document.createElement("strong")
+var myQuestions = [
+  {
+    question: "What is 10/2?",
+    answers: {
+      a: '3',
+      b: '5',
+      c: '115'
+    },
+    correctAnswer: 'b'
+  },
+  {
+    question: "What is 30/3?",
+    answers: {
+      a: '3',
+      b: '5',
+      c: '10'
+    },
+    correctAnswer: 'c'
+  }
+];
 
-// Below is the attached string
-strong.innerText = "It can be called anything but the element is [strong]"
+var quizContainer = document.getElementById('quiz');
+var resultsContainer = document.getElementById('results');
+var submitButton = document.getElementById('submit');
 
-// Here is where the string appends to the div
-div.append(strong)
+generateQuiz(myQuestions, quizContainer, resultsContainer, submitButton);
 
-// The div is then attached to the body to display on the page
-body.append(div)
+function generateQuiz(questions, quizContainer, resultsContainer, submitButton){
 
+  function showQuestions(questions, quizContainer){
+    // we'll need a place to store the output and the answer choices
+    var output = [];
+    var answers;
 
-// function displayMessage(){
-//     document.getElementById("startBtn").innerHTML = "---";
-// }
+    // for each question...
+    for(var i=0; i<questions.length; i++){
+      
+      // first reset the list of answers
+      answers = [];
 
-// // get reference to button
-// var btn = document.getElementById("startBtn");
-// // add event listener for the button, for action "click"
-// btn.addEventListener("click", displayMessage);
+      // for each available answer...
+      for(letter in questions[i].answers){
 
+        // ...add an html radio button
+        answers.push(
+          '<label>'
+            + '<input type="radio" name="question'+i+'" value="'+letter+'">'
+            + letter + ': '
+            + questions[i].answers[letter]
+          + '</label>'
+        );
+      }
 
-
-// ==================================================== //
-var questions = ["◘0", "◘1", "◘2", "◘3", "◘4"]; 
-var resetBtn = document.querySelector("#resetBtn");
-resetBtn.addEventListener("click", myFunction);
-
-function myFunction() {
-    var x = document.getElementById("myDIV");
-    if (x.style.display === "visible") {
-        var reset = document.getElementById("button");
-        reset.style.toggle("black", true)
-      x.style.display = "block";
-    } else {
-      x.style.display = "none";
+      // add this question and its answers to the output
+      output.push(
+        '<div class="question">' + questions[i].question + '</div>'
+        + '<div class="answers">' + answers.join('') + '</div>'
+      );
     }
+
+    // finally combine our output list into one string of html and put it on the page
+    quizContainer.innerHTML = output.join('');
   }
 
-const check = document.getElementById("check");
-// forEach will allow a function to act upon each element of the array
-// the parameter (i) can only be called inside the function
-questions.forEach(function (i) {
-    const button = document.createElement("button");
-    button.innerText = i;
-// innerText is just displaying the value of the array called 
-        button.addEventListener("click", function() {
-            alert(i)
-// the function has the event listener inside because it needs
-// to be checking that a user clicks on the created button
-        })
-// finally it attaches the button to the check element
-    check.appendChild(button);
-});
 
+  function showResults(questions, quizContainer, resultsContainer){
+    
+    // gather answer containers from our quiz
+    var answerContainers = quizContainer.querySelectorAll('.answers');
+    
+    // keep track of user's answers
+    var userAnswer = '';
+    var numCorrect = 0;
+    
+    // for each question...
+    for(var i=0; i<questions.length; i++){
+
+      // find selected answer
+      userAnswer = (answerContainers[i].querySelector('input[name=question'+i+']:checked')||{}).value;
+      
+      // if answer is correct
+      if(userAnswer===questions[i].correctAnswer){
+        // add to the number of correct answers
+      }
+    }
+  }
+}
