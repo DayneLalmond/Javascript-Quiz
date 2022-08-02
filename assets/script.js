@@ -8,8 +8,8 @@ start.addEventListener("click", function() {
   if(mode === "queued") {
     start.setAttribute("class", "started");
 // the start variable's style is changed to ".started" which hides the button    
-// below are the actions to perform IF the mode is queued which it is by default
-    var answers = ["Remaru", "Veldora", "Gobbiru", "Miliem"];
+// below are the actions to perform IF the mode is "queued" which it is by default
+    var answers = ["Answer1", "Answer2", "Answer3", "Answer4"];
 answers.forEach(function(i) {
 // forEach will allow a function to act upon each element of the array
 // the parameter (i) can only be called inside the function
@@ -54,7 +54,3 @@ container.setAttribute("class", "active");
 
 
 // ===========================================================
-
-// for (var i = 0; i < questions.length; i++) {
-//   document.getElementById("check").setAttribute("style", "display: flex");
-// } 
