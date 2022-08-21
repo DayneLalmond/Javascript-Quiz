@@ -3,7 +3,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background: whitesmoke;
+    background: slategray;
 }
 
 .container {
@@ -11,11 +11,13 @@ body {
 }
 
 .queued {
-    color: grey;
+    color: white;
 }
 
 .active {
     transition: all 0.3s ease-in-out;
+    border-top: 1px solid darkgrey;
+    background: gainsboro;
     color: blueviolet;  
 }
 
