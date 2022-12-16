@@ -1,59 +1,63 @@
 var start = document.querySelector("#startBtn");
 var container = document.querySelector(".container");
+var finalScore = document.createElement('input');
+var submitScore = document.createElement('button');
+var saveUser = document.createElement('p');
 var currentIndex = 0;
 var points = 0;
+var timeleft = 60;
 var questions = [
   {
-    text: "Question 1",
-    choices: ["✗", "✓", "✗", "✗"],
-    correct: "✓"
+    text: "What is a for loop?",
+    choices: ["The path to a variable", "A method to iterate a series of data", "A type of CSS style", "A routine"],
+    correct: "A method to iterate a series of data"
   },
   {
-    text: "Question 2",
-    choices: ["✗", "✗", "✗", "✓"],
-    correct: "✓"
+    text: "How can you add a condtion to a function?",
+    choices: ["By adding a which statement", "With if and when statements", "Functions are always conditional", "Using if and else statements"],
+    correct: "Using if and else statements"
   },
   {
-    text: "Question 3",
-    choices: ["✗", "✓", "✗", "✗"],
-    correct: "✓"
+    text: "What does jQuery do to improve JS?",
+    choices: ["It is a directory path", "Write less, do more!", "Nothing", "It automatically saves files"],
+    correct: "Write less, do more!"
   },
   {
-    text: "Question 4",
-    choices: ["✓", "✗", "✗", "✗"],
-    correct: "✓"
+    text: "If set to const, can it be changed?",
+    choices: ["Nope", "Sometimes", "Yes", "With a key value pair"],
+    correct: "Nope"
   },
   {
-    text: "Question 5",
-    choices: ["✗", "✗", "✗", "✓"],
-    correct: "✓"
+    text: "What makes Javascript synchronous?",
+    choices: ["Your internet connection", "Functions are always async", "It is easy to learn", "It's single threaded"],
+    correct: "It's single threaded"
   },
   {
-    text: "Question 6",
-    choices: ["✗", "✗", "✓", "✗"],
-    correct: "✓"
+    text: "Which is a primitive datatype?",
+    choices: ["List", "Paragraph", "String", "Async"],
+    correct: "String"
   },
   {
-    text: "Question 7",
-    choices: ["✓", "✗", "✗", "✗"],
-    correct: "✓"
+    text: "What is an array?",
+    choices: ["A set of values", "An invalid expression", "A formatting style", "None of the above"],
+    correct: "A set of values"
   },
   {
-    text: "Question 8",
-    choices: ["✗", "✓", "✗", "✗"],
-    correct: "✓"
+    text: "Can you change CSS properties with a function?",
+    choices: ["Only after creating the styles", "Yes", "No", "CSS can only be changed in the stylesheet"],
+    correct: "Yes"
   },
   {
-    text: "Question 9",
-    choices: ["✗", "✗", "✗", "✓"],
-    correct: "✓"
+    text: "How do you prevent the page from refreshing?",
+    choices: ["By recycling code", "Using the jQuery identifier", "Going offline", "event.preventDefault"],
+    correct: "event.preventDefault"
   },
   {
-    text: "Question 10",
-    choices: ["✗", "✗", "✓", "✗"],
-    correct: "✓"
+    text: "Is Javascript the same as Java?",
+    choices: ["Yes", "Only when it is a function", "No", "Java is a shortcut"],
+    correct: "No"
   }
-]
+];
 
 var mode = "queued";
 
@@ -64,23 +68,33 @@ start.addEventListener("click", function() {
 // the start variable's style is changed to ".started" which hides the button    
 // below are the actions to perform IF the mode is "queued" which it is by default
 displayQuestion();
-    var timeleft = 10;
     var theTimer = setInterval(function() {
   if(timeleft <= 0) {
 // additionally, a timer begins when the user clicks on start
 // the timer will remove the question at the end of its interval
+    clearInterval(theTimer);
+    document.getElementById("timer").remove();
     const percentage = Math.round((points / 10) * 100);  
     document.getElementById("theSpan").innerText = points + "/10 Correct"
     document.getElementById("percentage").innerText = percentage + "%"
     document.getElementById("check").remove();
-    clearInterval(theTimer);
-    // looks like this all I need to save points to the local storage!
-    localStorage["points"] = points
+    container.append(finalScore)
+    container.append(submitScore)
+// here is where the score is stored through localstorage
+    submitScore.innerText = "Save Score"
+
+    submitScore.addEventListener("click", function() {
+      localStorage.setItem(finalScore.value, points)
+      saveUser.innerText = finalScore.value
+      container.append(saveUser);
+      clear();
+    })
   }
+  else {
   document.getElementById("timer").innerHTML = timeleft
-  document.getElementById("timer").value = 10 - timeleft;
   timeleft--;
-}, 1000);
+}}, 1000);
+
 
 mode = "active";
 container.setAttribute("class", "active");
@@ -104,9 +118,6 @@ function displayQuestion() {
         button.innerText = i;
     // innerText is just displaying the value of the array called
             button.addEventListener("click", checkAnswers)
-                // check answers function without () because it is not called immidiately
-    // the function has the event listener inside because it needs
-    // to be checking that the user clicks on the created button
     // finally it attaches the button to the check element
         check.append(button);
     });
@@ -116,17 +127,27 @@ function displayQuestion() {
 function checkAnswers(event)
 // Event is accepting the event object created from the button event listener
 {
-  //event.target is the element that was selected
+//event.target is the element that was selected
 var result = (event.target.textContent);
 var asCorrect = questions[currentIndex].correct;
 if (result === asCorrect) {
   points++
 }
 
-else {}
+else {
+  var timeSubtract = (timeleft - 10)
+  timeleft = timeSubtract;
+}
 
 // check innerHTML clears the element
   check.innerHTML = ""
   currentIndex++
   displayQuestion();
+}
+
+// clear the input value, and refresh the page
+function clear() {
+  finalScore.value = ''
+  container.setAttribute("class", "queued");
+  window.location.reload(true)
 }
